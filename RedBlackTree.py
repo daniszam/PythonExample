@@ -1,3 +1,6 @@
+from random import randint
+
+
 class Node:
 
     def __init__(self, parent, key = None):
@@ -58,6 +61,8 @@ class BlackRedTree:
                         grand_parent.right.isRed = False
                         grand_parent.isRed = True
                         node = grand_parent
+                    else:
+                        node = parent
                 else:
                     if node is parent.right:
                         node = parent
@@ -72,6 +77,8 @@ class BlackRedTree:
                         grand_parent.left.isRed = False
                         grand_parent.isRed = True
                         node = grand_parent
+                    else:
+                        node = parent
                 else:
                     if node is parent.left:
                         node = parent
@@ -129,24 +136,22 @@ class BlackRedTree:
             else:
                 y.parent.left = None
         if y is not node:
-            rotate = node.isRed
-            node.isRed = y.isRed
             node.key = y.key
-        if not rotate:
+        if not y.isRed:
             if node.right is not None:
                 self.__fix_deleting(node.right)
             else:
                 self.__fix_deleting(node.left)
 
     def __fix_deleting(self, node):
-        while node.parent.isRed is False and node is not self.root:
+        while node.isRed is False and node is not self.root:
             if node is node.parent.left:
                 brother = node.parent.right
                 if brother.isRed:
                     brother.isRed = False
                     node.parent.isRed = True
                     self.__left_rotate(node.parent)
-                if brother.right.isRed and brother.left.isRed:
+                if not brother.right.isRed and not brother.left.isRed:
                     brother.isRed = True
                 else:
                     if not brother.right.isRed:
@@ -165,7 +170,7 @@ class BlackRedTree:
                     brother.isRed = False
                     node.parent.isRed = True
                     self.__right_rotate(node.parent)
-                if brother.right.isRed and brother.left.isRed:
+                if not brother.right.isRed and not brother.left.isRed:
                     brother.isRed = True
                 else:
                     if not brother.left.isRed:
@@ -176,7 +181,7 @@ class BlackRedTree:
                     brother = parent
                     parent.isRed = False
                     brother.left.isRed = False
-                    self.__right_rotate(parent)
+                    self.__right_rotate(node.parent)
                     node = self.root
         node.isRed = False
         self.root.isRed = False
@@ -251,6 +256,8 @@ tree.insert(0)
 tree.insert(4)
 tree.insert(2)
 tree.delete(5)
+for x in range(10000):
+    tree.insert(randint(-1000000, 1000000))
 print(tree.max())
 print(tree.min())
 tree.breadth_first_search()
