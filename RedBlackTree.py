@@ -3,21 +3,12 @@ from random import randint
 
 class Node:
 
-    def __init__(self, parent, key = None):
+    def __init__(self, parent, key=None):
         self.parent = parent
         self.isRed = True
         self.key = key
         self.left = None
         self.right = None
-
-    def checkParent(self):
-        if self.parent.isRed:
-            grandparent = self.parent.parent
-            if grandparent.left is self.parent:
-                if grandparent.right.isRed:
-                    grandparent.isRed = True
-                    grandparent.left.isRed = False
-                    grandparent.right.isRed = False
 
     def __str__(self):
         return str(self.key)
@@ -256,7 +247,7 @@ tree.insert(0)
 tree.insert(4)
 tree.insert(2)
 tree.delete(5)
-for x in range(10000):
+for x in range(1000000):
     tree.insert(randint(-1000000, 1000000))
 print(tree.max())
 print(tree.min())
